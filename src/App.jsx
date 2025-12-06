@@ -1,8 +1,244 @@
 import React, { useState, useEffect } from 'react';
-import { Search, ChefHat, Clock, Globe } from 'lucide-react';
+import { Search, ChefHat, Globe, Menu, X, LogIn, LogOut, User } from 'lucide-react';
+
+// Login Component
+function LoginModal({ isOpen, onClose, onLogin, darkMode }) {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleLogin = () => {
+    if (username.trim() && password.trim()) {
+      onLogin(username);
+      setUsername('');
+      setPassword('');
+    }
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      handleLogin();
+    }
+  };
+
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+      <div 
+        className="rounded-2xl p-8 max-w-md w-full shadow-2xl"
+        style={{
+          backgroundColor: darkMode ? '#1f2937' : '#ffffff',
+          color: darkMode ? '#ffffff' : '#1f2937'
+        }}
+      >
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-2xl font-bold">Login</h2>
+          <button 
+            onClick={onClose}
+            style={{ color: darkMode ? '#9ca3af' : '#6b7280' }}
+          >
+            <X className="w-6 h-6" />
+          </button>
+        </div>
+        
+        <div className="space-y-4">
+          <div>
+            <label 
+              className="block text-sm font-medium mb-2"
+              style={{ color: darkMode ? '#d1d5db' : '#374151' }}
+            >
+              Username
+            </label>
+            <input
+              type="text"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              onKeyPress={handleKeyPress}
+              placeholder="Enter your username"
+              className="w-full px-4 py-3 rounded-lg border-2 focus:border-orange-500 focus:outline-none"
+              style={{
+                backgroundColor: darkMode ? '#374151' : '#ffffff',
+                borderColor: darkMode ? '#4b5563' : '#e5e7eb',
+                color: darkMode ? '#ffffff' : '#000000'
+              }}
+            />
+          </div>
+          
+          <div>
+            <label 
+              className="block text-sm font-medium mb-2"
+              style={{ color: darkMode ? '#d1d5db' : '#374151' }}
+            >
+              Password
+            </label>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              onKeyPress={handleKeyPress}
+              placeholder="Enter your password"
+              className="w-full px-4 py-3 rounded-lg border-2 focus:border-orange-500 focus:outline-none"
+              style={{
+                backgroundColor: darkMode ? '#374151' : '#ffffff',
+                borderColor: darkMode ? '#4b5563' : '#e5e7eb',
+                color: darkMode ? '#ffffff' : '#000000'
+              }}
+            />
+          </div>
+          
+          <button
+            onClick={handleLogin}
+            className="w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 rounded-lg transition-colors"
+          >
+            Login
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// Dark Mode Toggle Button Component
+function DarkModeToggle({ darkMode, onToggle }) {
+  return (
+    <button
+      onClick={onToggle}
+      className="p-2 rounded-lg transition-colors"
+      style={{
+        backgroundColor: darkMode ? '#374151' : '#f3f4f6'
+      }}
+      aria-label="Toggle dark mode"
+    >
+      {darkMode ? (
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-yellow-400">
+          <circle cx="12" cy="12" r="5"></circle>
+          <line x1="12" y1="1" x2="12" y2="3"></line>
+          <line x1="12" y1="21" x2="12" y2="23"></line>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+          <line x1="1" y1="12" x2="3" y2="12"></line>
+          <line x1="21" y1="12" x2="23" y2="12"></line>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+        </svg>
+      ) : (
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-orange-500">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+      )}
+    </button>
+  );
+}
+
+// Mobile Menu Component
+function MobileMenu({ isOpen, onClose, user, onLogout, onLoginClick, darkMode, onToggleDarkMode }) {
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 z-40" onClick={onClose}>
+      <div 
+        className="fixed right-0 top-0 h-full w-64 shadow-2xl p-6 transform transition-transform"
+        style={{
+          backgroundColor: darkMode ? '#1f2937' : '#ffffff'
+        }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="flex justify-between items-center mb-8">
+          <h2 
+            className="text-xl font-bold"
+            style={{ color: darkMode ? '#ffffff' : '#1f2937' }}
+          >
+            Menu
+          </h2>
+          <button 
+            onClick={onClose}
+            style={{ color: darkMode ? '#9ca3af' : '#6b7280' }}
+          >
+            <X className="w-6 h-6" />
+          </button>
+        </div>
+
+        <div className="space-y-4">
+          {user ? (
+            <div 
+              className="p-4 rounded-lg mb-4"
+              style={{
+                backgroundColor: darkMode ? '#374151' : '#fff7ed'
+              }}
+            >
+              <div className="flex items-center gap-2 mb-2">
+                <User className="w-5 h-5 text-orange-500" />
+                <span 
+                  className="font-semibold"
+                  style={{ color: darkMode ? '#ffffff' : '#1f2937' }}
+                >
+                  {user}
+                </span>
+              </div>
+              <button
+                onClick={() => {
+                  onLogout();
+                  onClose();
+                }}
+                className="w-full flex items-center gap-2 px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg transition-colors"
+              >
+                <LogOut className="w-4 h-4" />
+                Logout
+              </button>
+            </div>
+          ) : (
+            <button
+              onClick={() => {
+                onLoginClick();
+                onClose();
+              }}
+              className="w-full flex items-center gap-2 px-4 py-3 bg-orange-500 hover:bg-orange-600 text-white rounded-lg transition-colors"
+            >
+              <LogIn className="w-5 h-5" />
+              Login
+            </button>
+          )}
+
+          <div 
+            className="pt-4 border-t"
+            style={{ borderColor: darkMode ? '#4b5563' : '#e5e7eb' }}
+          >
+            <button
+              onClick={onToggleDarkMode}
+              className="w-full flex items-center justify-between px-4 py-3 rounded-lg transition-colors"
+              style={{
+                backgroundColor: darkMode ? '#374151' : '#f3f4f6',
+                color: darkMode ? '#ffffff' : '#1f2937'
+              }}
+            >
+              <span className="font-medium">Dark Mode</span>
+              {darkMode ? (
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-yellow-400">
+                  <circle cx="12" cy="12" r="5"></circle>
+                  <line x1="12" y1="1" x2="12" y2="3"></line>
+                  <line x1="12" y1="21" x2="12" y2="23"></line>
+                  <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                  <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                  <line x1="1" y1="12" x2="3" y2="12"></line>
+                  <line x1="21" y1="12" x2="23" y2="12"></line>
+                  <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                  <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                </svg>
+              ) : (
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-orange-500">
+                  <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                </svg>
+              )}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 // SearchBar Component
-function SearchBar({ onSearch, searchQuery, setSearchQuery }) {
+function SearchBar({ onSearch, searchQuery, setSearchQuery, darkMode }) {
   const handleKeyPress = (e) => {
     if (e.key === 'Enter') {
       onSearch();
@@ -18,7 +254,12 @@ function SearchBar({ onSearch, searchQuery, setSearchQuery }) {
           onChange={(e) => setSearchQuery(e.target.value)}
           onKeyPress={handleKeyPress}
           placeholder="Search for recipes... (e.g., chicken, pasta, cake)"
-          className="w-full px-6 py-4 pr-12 text-lg rounded-2xl border-2 border-gray-200 focus:border-orange-500 focus:outline-none shadow-lg"
+          className="w-full px-6 py-4 pr-12 text-lg rounded-2xl border-2 focus:border-orange-500 focus:outline-none shadow-lg"
+          style={{
+            backgroundColor: darkMode ? '#374151' : '#ffffff',
+            borderColor: darkMode ? '#4b5563' : '#e5e7eb',
+            color: darkMode ? '#ffffff' : '#000000'
+          }}
         />
         <button
           onClick={onSearch}
@@ -32,7 +273,7 @@ function SearchBar({ onSearch, searchQuery, setSearchQuery }) {
 }
 
 // FilterBar Component
-function FilterBar({ selectedCategory, onCategoryChange }) {
+function FilterBar({ selectedCategory, onCategoryChange, darkMode }) {
   const categories = ['All', 'Breakfast', 'Dessert', 'Seafood', 'Vegetarian', 'Chicken', 'Beef', 'Pasta'];
 
   return (
@@ -41,11 +282,12 @@ function FilterBar({ selectedCategory, onCategoryChange }) {
         <button
           key={cat}
           onClick={() => onCategoryChange(cat)}
-          className={`px-6 py-2 rounded-full font-medium whitespace-nowrap transition-all ${
-            selectedCategory === cat
-              ? 'bg-orange-500 text-white shadow-lg scale-105'
-              : 'bg-white text-gray-700 hover:bg-gray-100 shadow'
-          }`}
+          className="px-6 py-2 rounded-full font-medium whitespace-nowrap transition-all shadow"
+          style={{
+            backgroundColor: selectedCategory === cat ? '#f97316' : (darkMode ? '#374151' : '#ffffff'),
+            color: selectedCategory === cat ? '#ffffff' : (darkMode ? '#e5e7eb' : '#374151'),
+            transform: selectedCategory === cat ? 'scale(1.05)' : 'scale(1)'
+          }}
         >
           {cat}
         </button>
@@ -55,11 +297,16 @@ function FilterBar({ selectedCategory, onCategoryChange }) {
 }
 
 // RecipeCard Component
-function RecipeCard({ recipe }) {
+function RecipeCard({ recipe, darkMode }) {
   const [showDetails, setShowDetails] = useState(false);
 
   return (
-    <div className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-shadow cursor-pointer">
+    <div 
+      className="rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-shadow cursor-pointer"
+      style={{
+        backgroundColor: darkMode ? '#1f2937' : '#ffffff'
+      }}
+    >
       <div className="relative h-48 overflow-hidden" onClick={() => setShowDetails(!showDetails)}>
         <img
           src={recipe.strMealThumb}
@@ -72,9 +319,17 @@ function RecipeCard({ recipe }) {
       </div>
       
       <div className="p-5">
-        <h3 className="text-xl font-bold text-gray-800 mb-2">{recipe.strMeal}</h3>
+        <h3 
+          className="text-xl font-bold mb-2"
+          style={{ color: darkMode ? '#ffffff' : '#1f2937' }}
+        >
+          {recipe.strMeal}
+        </h3>
         
-        <div className="flex items-center gap-4 text-sm text-gray-600 mb-3">
+        <div 
+          className="flex items-center gap-4 text-sm mb-3"
+          style={{ color: darkMode ? '#9ca3af' : '#4b5563' }}
+        >
           <div className="flex items-center gap-1">
             <Globe className="w-4 h-4" />
             <span>{recipe.strArea}</span>
@@ -93,9 +348,20 @@ function RecipeCard({ recipe }) {
         </button>
 
         {showDetails && (
-          <div className="mt-4 pt-4 border-t border-gray-200">
-            <h4 className="font-semibold text-gray-800 mb-2">Instructions:</h4>
-            <p className="text-sm text-gray-600 leading-relaxed max-h-40 overflow-y-auto">
+          <div 
+            className="mt-4 pt-4 border-t"
+            style={{ borderColor: darkMode ? '#4b5563' : '#e5e7eb' }}
+          >
+            <h4 
+              className="font-semibold mb-2"
+              style={{ color: darkMode ? '#ffffff' : '#1f2937' }}
+            >
+              Instructions:
+            </h4>
+            <p 
+              className="text-sm leading-relaxed max-h-40 overflow-y-auto"
+              style={{ color: darkMode ? '#d1d5db' : '#4b5563' }}
+            >
               {recipe.strInstructions}
             </p>
             {recipe.strYoutube && (
@@ -116,7 +382,7 @@ function RecipeCard({ recipe }) {
 }
 
 // RecipeList Component
-function RecipeList({ recipes, loading }) {
+function RecipeList({ recipes, loading, darkMode }) {
   if (loading) {
     return (
       <div className="flex justify-center items-center py-20">
@@ -128,8 +394,16 @@ function RecipeList({ recipes, loading }) {
   if (recipes.length === 0) {
     return (
       <div className="text-center py-20">
-        <ChefHat className="w-20 h-20 mx-auto text-gray-300 mb-4" />
-        <p className="text-xl text-gray-500">No recipes found. Try a different search!</p>
+        <ChefHat 
+          className="w-20 h-20 mx-auto mb-4"
+          style={{ color: darkMode ? '#4b5563' : '#d1d5db' }}
+        />
+        <p 
+          className="text-xl"
+          style={{ color: darkMode ? '#9ca3af' : '#6b7280' }}
+        >
+          No recipes found. Try a different search!
+        </p>
       </div>
     );
   }
@@ -137,7 +411,7 @@ function RecipeList({ recipes, loading }) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {recipes.map((recipe) => (
-        <RecipeCard key={recipe.idMeal} recipe={recipe} />
+        <RecipeCard key={recipe.idMeal} recipe={recipe} darkMode={darkMode} />
       ))}
     </div>
   );
@@ -149,6 +423,48 @@ export default function App() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [loading, setLoading] = useState(false);
+  const [user, setUser] = useState(null);
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
+  const [darkMode, setDarkMode] = useState(() => {
+    if (typeof localStorage !== 'undefined') {
+      return localStorage.getItem('darkMode') === 'true';
+    }
+    return false;
+  });
+
+  // Initialize dark mode on mount
+  useEffect(() => {
+    if (darkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [darkMode]);
+
+  // Toggle dark mode
+  const toggleDarkMode = () => {
+    const newDarkMode = !darkMode;
+    setDarkMode(newDarkMode);
+    
+    // Save preference to localStorage
+    try {
+      localStorage.setItem('darkMode', newDarkMode ? 'true' : 'false');
+    } catch {
+      console.log('localStorage not available');
+    }
+  };
+
+  // Handle login
+  const handleLogin = (username) => {
+    setUser(username);
+    setShowLoginModal(false);
+  };
+
+  // Handle logout
+  const handleLogout = () => {
+    setUser(null);
+  };
 
   // Fetch recipes by search query
   const searchRecipes = async () => {
@@ -184,7 +500,6 @@ export default function App() {
       );
       const data = await response.json();
       
-      // Fetch full details for each recipe
       if (data.meals) {
         const detailedRecipes = await Promise.all(
           data.meals.slice(0, 9).map(async (meal) => {
@@ -230,15 +545,83 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-orange-50 via-yellow-50 to-red-50">
+    <div 
+      className="min-h-screen transition-colors"
+      style={{
+        background: darkMode 
+          ? 'linear-gradient(to bottom right, #111827, #1f2937, #111827)'
+          : 'linear-gradient(to bottom right, #fff7ed, #fef3c7, #fee2e2)'
+      }}
+    >
       {/* Header */}
-      <header className="bg-white shadow-md sticky top-0 z-10">
+      <header 
+        className="shadow-md sticky top-0 z-10 transition-colors"
+        style={{
+          backgroundColor: darkMode ? '#1f2937' : '#ffffff'
+        }}
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="flex items-center justify-center gap-3">
-            <ChefHat className="w-10 h-10 text-orange-500" />
-            <h1 className="text-4xl font-bold bg-linear-to-r from-orange-500 to-red-500 bg-clip-text text-transparent">
-              Recipe Finder
-            </h1>
+          <div className="flex items-center justify-between">
+            {/* Logo */}
+            <div className="flex items-center gap-3">
+              <ChefHat className="w-10 h-10 text-orange-500" />
+              <h1 className="text-2xl sm:text-4xl font-bold bg-linear-to-r from-orange-500 to-red-500 bg-clip-text text-transparent">
+                Recipe Finder
+              </h1>
+            </div>
+
+            {/* Desktop Actions */}
+            <div className="hidden md:flex items-center gap-4">
+              <DarkModeToggle darkMode={darkMode} onToggle={toggleDarkMode} />
+
+              {user ? (
+                <div className="flex items-center gap-3">
+                  <div 
+                    className="flex items-center gap-2 px-4 py-2 rounded-lg"
+                    style={{
+                      backgroundColor: darkMode ? '#374151' : '#fff7ed'
+                    }}
+                  >
+                    <User className="w-5 h-5 text-orange-500" />
+                    <span 
+                      className="font-semibold"
+                      style={{ color: darkMode ? '#ffffff' : '#1f2937' }}
+                    >
+                      {user}
+                    </span>
+                  </div>
+                  <button
+                    onClick={handleLogout}
+                    className="flex items-center gap-2 px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg transition-colors"
+                  >
+                    <LogOut className="w-5 h-5" />
+                    Logout
+                  </button>
+                </div>
+              ) : (
+                <button
+                  onClick={() => setShowLoginModal(true)}
+                  className="flex items-center gap-2 px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-lg transition-colors"
+                >
+                  <LogIn className="w-5 h-5" />
+                  Login
+                </button>
+              )}
+            </div>
+
+            {/* Mobile Menu Button */}
+            <button
+              onClick={() => setShowMobileMenu(true)}
+              className="md:hidden p-2 rounded-lg transition-colors"
+              style={{
+                backgroundColor: darkMode ? '#374151' : '#f3f4f6'
+              }}
+            >
+              <Menu 
+                className="w-6 h-6"
+                style={{ color: darkMode ? '#ffffff' : '#1f2937' }}
+              />
+            </button>
           </div>
         </div>
       </header>
@@ -249,20 +632,43 @@ export default function App() {
           onSearch={searchRecipes}
           searchQuery={searchQuery}
           setSearchQuery={setSearchQuery}
+          darkMode={darkMode}
         />
         
         <FilterBar
           selectedCategory={selectedCategory}
           onCategoryChange={handleCategoryChange}
+          darkMode={darkMode}
         />
         
-        <RecipeList recipes={recipes} loading={loading} />
+        <RecipeList recipes={recipes} loading={loading} darkMode={darkMode} />
       </main>
 
       {/* Footer */}
-      <footer className="text-center py-8 text-gray-600">
+      <footer 
+        className="text-center py-8"
+        style={{ color: darkMode ? '#9ca3af' : '#4b5563' }}
+      >
         <p>Powered by TheMealDB API</p>
       </footer>
+
+      {/* Modals */}
+      <LoginModal
+        isOpen={showLoginModal}
+        onClose={() => setShowLoginModal(false)}
+        onLogin={handleLogin}
+        darkMode={darkMode}
+      />
+
+      <MobileMenu
+        isOpen={showMobileMenu}
+        onClose={() => setShowMobileMenu(false)}
+        user={user}
+        onLogout={handleLogout}
+        onLoginClick={() => setShowLoginModal(true)}
+        darkMode={darkMode}
+        onToggleDarkMode={toggleDarkMode}
+      />
     </div>
   );
 }

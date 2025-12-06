@@ -1,1 +1,25 @@
 @import "tailwindcss";
+
+:root {
+  --bg-from: rgb(255, 247, 237);
+  --bg-via: rgb(255, 250, 205);
+  --bg-to: rgb(254, 240, 230);
+  --text-primary: rgb(31, 41, 55);
+  --text-secondary: rgb(107, 114, 128);
+}
+
+html.dark {
+  --bg-from: rgb(17, 24, 39);
+  --bg-via: rgb(31, 41, 55);
+  --bg-to: rgb(55, 65, 81);
+  --text-primary: rgb(243, 244, 246);
+  --text-secondary: rgb(209, 213, 219);
+}
+
+html {
+  color-scheme: light;
+}
+
+html.dark {
+  color-scheme: dark;
+}
