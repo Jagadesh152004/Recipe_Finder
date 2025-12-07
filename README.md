@@ -8,25 +8,27 @@ A modern, responsive React web application that helps you discover and explore r
 
 ## 🖼️ Screenshots
 
-Below are screenshots and a placeholder image of the running app (you can replace `public/screenshot.svg` with a real screenshot later):
+Below are the actual screenshots captured from the running app plus the original placeholder.
 
-### Live App (placeholder)
+### Desktop
 
-![App Screenshot](./public/screenshot.svg)
+![Desktop screenshot](/public/screenshot-desktop.png)
 
-*Caption: Mockup / placeholder screenshot showing the app layout and theme.*
+*Caption: Desktop view (1366×768) showing the search bar, category filters and recipe grid.*
 
-### Optional: Add real screenshots
+### Mobile
 
-1. Open the app locally with `npm run dev`.
-2. Take screenshots (desktop and mobile view).
-3. Save files into `public/` (e.g. `public/screenshot-desktop.png`, `public/screenshot-mobile.png`).
-4. Update this README to reference the files, for example:
+![Mobile screenshot](/public/screenshot-mobile.png)
 
-```markdown
-![Desktop](/public/screenshot-desktop.png)
-![Mobile](/public/screenshot-mobile.png)
-```
+*Caption: Mobile view (390×844) showing the responsive layout and mobile menu.*
+
+### Placeholder / Mockup
+
+If you prefer a mockup, the repository still contains a placeholder image:
+
+![App Mockup](./public/screenshot.svg)
+
+You can replace the `public/screenshot-*.png` files with new screenshots at any time and commit them to update this README.
 
 
 - 🔍 **Search Recipes** - Search for recipes by name (e.g., chicken, pasta, cake)
