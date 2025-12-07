@@ -22,13 +22,7 @@ Below are the actual screenshots captured from the running app plus the original
 
 *Caption: Mobile view (390×844) showing the responsive layout and mobile menu.*
 
-### Placeholder / Mockup
-
-If you prefer a mockup, the repository still contains a placeholder image:
-
-![App Mockup](./public/screenshot.svg)
-
-You can replace the `public/screenshot-*.png` files with new screenshots at any time and commit them to update this README.
+You can replace the `public/screenshot-*.png` files in `public/` with new screenshots at any time and commit them to update this README.
 
 
 - 🔍 **Search Recipes** - Search for recipes by name (e.g., chicken, pasta, cake)
