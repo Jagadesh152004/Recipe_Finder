@@ -2,7 +2,32 @@
 
 A modern, responsive React web application that helps you discover and explore recipes from around the world. Built with React, Vite, Tailwind CSS, and the TheMealDB API.
 
+![Recipe Finder App](https://images.unsplash.com/photo-1495521821757-a1efb6729352?w=800&h=400&fit=crop)
+
 ## ✨ Features
+
+## 🖼️ Screenshots
+
+Below are screenshots and a placeholder image of the running app (you can replace `public/screenshot.svg` with a real screenshot later):
+
+### Live App (placeholder)
+
+![App Screenshot](./public/screenshot.svg)
+
+*Caption: Mockup / placeholder screenshot showing the app layout and theme.*
+
+### Optional: Add real screenshots
+
+1. Open the app locally with `npm run dev`.
+2. Take screenshots (desktop and mobile view).
+3. Save files into `public/` (e.g. `public/screenshot-desktop.png`, `public/screenshot-mobile.png`).
+4. Update this README to reference the files, for example:
+
+```markdown
+![Desktop](/public/screenshot-desktop.png)
+![Mobile](/public/screenshot-mobile.png)
+```
+
 
 - 🔍 **Search Recipes** - Search for recipes by name (e.g., chicken, pasta, cake)
 - 🏷️ **Filter by Category** - Browse recipes by categories (Breakfast, Dessert, Seafood, Vegetarian, Chicken, Beef, Pasta)
